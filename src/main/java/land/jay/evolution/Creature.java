@@ -7,65 +7,81 @@ import javafx.scene.shape.Rectangle;
 
 public class Creature {
     
+    public static final double MAX_HEIGHT = 230;
+    public static final double MAX_WIDTH = 460;
     private static final double bodyWidth = 120;
     private static final double headWidth = 40;
     
+    private final double baseLength;
     private final double bodyHeight;
-    private final double neckLength;
+    private final double neckExt;
+    private final double tailExt;
     private final double headRaise;
-    private final double tailLength;
     private final double tailRaise;
     
+    private final double neckLength;
+    private final double tailLength;
+
+    // max width = 440
+    // max height = 210
     public Creature() {
         
-        this.bodyHeight = Maths.random(40, 80);
-        this.neckLength = Maths.random(30, 120);
-        this.headRaise = Maths.random(-30, 90);
-        this.tailLength = Maths.random(30, 160);
-        this.tailRaise = Maths.random(-30, 30);
+        this.baseLength = Gene.BASE_LENGTH.random();
+        this.bodyHeight = Gene.BODY_HEIGHT.random();
+        this.neckExt = Gene.NECK_EXT.random();
+        this.tailExt = Gene.TAIL_EXT.random();
+        this.tailRaise = Gene.TAIL_RAISE.random();
+        this.headRaise = Gene.NECK_RAISE.random();
+        
+        this.neckLength = this.baseLength + this.neckExt;
+        this.tailLength = this.baseLength + this.tailExt;
     }
     
-    public void draw(Group node) {
+    public Creature(Creature first, Creature second) {
         
-        double nodeWidth = node.getParent().prefWidth(-1);
-        double nodeHeight = node.getParent().prefHeight(-1);
+        this.baseLength = Gene.BASE_LENGTH.breed(first.baseLength, second.baseLength);
+        this.bodyHeight = Gene.BODY_HEIGHT.breed(first.bodyHeight, second.bodyHeight);
+        this.neckExt = Gene.NECK_EXT.breed(first.neckExt, second.neckExt);
+        this.tailExt = Gene.TAIL_EXT.breed(first.tailExt, second.tailExt);
+        this.tailRaise = Gene.TAIL_RAISE.breed(first.tailRaise, second.tailRaise);
+        this.headRaise = Gene.NECK_RAISE.breed(first.headRaise, second.headRaise);
         
-        double bodyX = (nodeWidth - bodyWidth) / 2;
-        double bodyY = (nodeHeight - bodyWidth) / 2;
-        Rectangle body = new Rectangle(bodyX, bodyY, bodyWidth, this.bodyHeight);
+        this.neckLength = this.baseLength + this.neckExt;
+        this.tailLength = this.baseLength + this.tailExt;
+    }
+    
+    public double getBodyHeight(double scale) {
         
-        double legWidth = 15 * (this.bodyHeight / 40);
-        double legHeight = bodyWidth - this.bodyHeight;
-        double frontlegX = bodyX;
-        double backlegX = bodyX + bodyWidth - legWidth;
-        double legY = bodyY + this.bodyHeight;
-        Rectangle frontleg = new Rectangle(frontlegX, legY, legWidth, legHeight);
-        Rectangle backleg = new Rectangle(backlegX, legY, legWidth, legHeight);
+        return this.bodyHeight * scale;
+    }
+    
+    public double getNeckLength(double scale) {
         
-        double headHeight = this.bodyHeight / 3;
-        double headX = bodyX - this.neckLength - headWidth;
-        double headY = bodyY - this.headRaise;
-        Polygon neck = new Polygon(
-                bodyX, bodyY,
-                bodyX, bodyY + this.bodyHeight,
-                headX + headWidth, headY + headHeight,
-                headX + headWidth, headY
-        );
-        Rectangle head = new Rectangle(headX, headY, headWidth, headHeight);
+        return this.neckLength * scale;
+    }
+    
+    public double getHeadRaise(double scale) {
         
-        Polygon tail = new Polygon(
-                bodyX + bodyWidth, bodyY,
-                bodyX + bodyWidth, bodyY + this.bodyHeight,
-                bodyX + bodyWidth + this.tailLength, bodyY + this.bodyHeight - this.tailRaise
-        );
+        return this.headRaise * scale;
+    }
+    
+    public double getTailLength(double scale) {
         
-        body.setFill(Color.AQUA);
-        frontleg.setFill(Color.AQUA);
-        backleg.setFill(Color.AQUA);
-        neck.setFill(Color.AQUA);
-        head.setFill(Color.AQUA);
-        tail.setFill(Color.AQUA);
+        return this.tailLength * scale;
+    }
+    
+    public double getTailRaise(double scale) {
         
-        node.getChildren().addAll(body, frontleg, backleg, neck, head, tail);
+        return this.tailRaise * scale;
+    }
+    
+    public double getBodyWidth(double scale) {
+        
+        return bodyWidth * scale;
+    }
+    
+    public double getHeadWidth(double scale) {
+        
+        return headWidth * scale;
     }
 }
