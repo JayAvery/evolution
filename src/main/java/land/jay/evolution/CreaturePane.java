@@ -8,8 +8,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+/** Pane to display a single creature. */
 public class CreaturePane extends Pane {
     
+    /** Padding to include around maximum dimensions. */
     private static final double PAD = 20;
     
     private Creature creature = new Creature();
@@ -30,6 +32,7 @@ public class CreaturePane extends Pane {
         this.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> this.toggleSelect());
     }
     
+    /** Displays the current creature. */
     public void drawCreature() {
         
         double scale = Math.min((this.width / (Creature.MAX_WIDTH + PAD)), (this.height / (Creature.MAX_HEIGHT + PAD)));
@@ -73,12 +76,14 @@ public class CreaturePane extends Pane {
         this.parts.getChildren().addAll(body, frontleg, backleg, neck, head, tail);
     }
     
+    /** Clears the current creature. */
     public void release() {
         this.creature = null;
         this.parts.getChildren().clear();
         this.empty = true;
     }
     
+    /** Adds a new creature bred from given parents. */
     public void breed(CreaturePane first, CreaturePane second) {
         this.creature = new Creature(first.creature, second.creature);
         this.drawCreature();
@@ -86,6 +91,7 @@ public class CreaturePane extends Pane {
         this.empty = false;
     }
     
+    /** Toggles whether this pane is selected. */
     public void toggleSelect() {
         if (this.selected || this.empty) {
             this.setStyle("-fx-border-color: black;\n -fx-border-width: 1");
@@ -96,7 +102,8 @@ public class CreaturePane extends Pane {
         }
     }
     
-    public void unSelect() {
+    /** Deselects this pane. */
+    public void deselect() {
         this.setStyle("-fx-border-color: black;\n -fx-border-width: 1");
         this.selected = false;
     }

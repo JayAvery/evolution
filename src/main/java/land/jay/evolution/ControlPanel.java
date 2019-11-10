@@ -5,8 +5,10 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
+/** Pane with control buttons and information for the player. */
 public class ControlPanel extends GridPane {
     
+    /** Pane for current message to player. */
     private DialogPane messagePane = new DialogPane();
     
     public ControlPanel(double width, double height) {
@@ -20,6 +22,7 @@ public class ControlPanel extends GridPane {
         this.add(breed, 2, 0);
     }
     
+    /** Updates the current message to player. */
     public void message(String message) {
         this.messagePane.setContentText(message);
     }

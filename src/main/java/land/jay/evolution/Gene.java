@@ -2,6 +2,7 @@ package land.jay.evolution;
 
 import org.apache.commons.math3.distribution.BetaDistribution;
 
+/** A genetic trait with a define interval and default seed distribution. */
 public enum Gene {
     
     BASE_LENGTH(0, 50),
@@ -11,11 +12,15 @@ public enum Gene {
     NECK_RAISE(-30, 90),
     TAIL_RAISE(-30, 30);
     
+    // Constant traits
     public static final double BODY_LENGTH = 120;
     public static final double HEAD_LENGTH = 40;
         
+    // Possible range
     private final double min;
     private final double max;
+    
+    /** Seed distribution for random creatures. */
     private final BetaDistribution seed;
     
     private Gene(double min, double max) {
@@ -27,12 +32,12 @@ public enum Gene {
     
     /** @return A random value weighted between the parents. */
     public double breed(double first, double second) {
-        
+
         double low = this.normalise(Math.min(first, second));
         double high = this.normalise(Math.max(first, second));
         double mid = low + ((high - low) / 2);
-        
-        double precision = Math.pow(high - mid, -1.6);        
+        // Never allow precision to be less than 1!
+        double precision = Math.pow(Math.max(high - mid, 1), -1.6);        
         BetaDistribution distribution = new BetaDistribution(precision *  mid, precision * (1 - mid));
         return this.unNormalise(distribution.sample());
     }

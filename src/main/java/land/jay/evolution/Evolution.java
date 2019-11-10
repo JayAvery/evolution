@@ -15,7 +15,9 @@ import javafx.stage.Stage;
 
 public class Evolution extends Application {
         
+    /** Pane holding player controls. */
     private static ControlPanel control;
+    /** Pane holding grid of creatures. */
     private static CreatureGrid grid;
     
     public static void main(String[] args) {
@@ -45,6 +47,7 @@ public class Evolution extends Application {
         stage.show();
     }
     
+    /** Releases (kills) selected creatures. */
     public static void release() {
         CreaturePane[] selected = grid.getSelected();
         if (selected.length == 0) {
@@ -58,6 +61,7 @@ public class Evolution extends Application {
         grid.clearSelection();
     }
     
+    /** Breeds selected creatures if possible. */
     public static void breed() {
         CreaturePane[] selected = grid.getSelected();
         CreaturePane[] empty = grid.getEmpty();
