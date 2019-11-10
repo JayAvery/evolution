@@ -7,8 +7,8 @@ import javafx.scene.shape.Rectangle;
 
 public class Creature {
     
-    public static final double MAX_HEIGHT = 230;
-    public static final double MAX_WIDTH = 460;
+    public static final double MAX_HEIGHT = 210;
+    public static final double MAX_WIDTH = 440;
     private static final double bodyWidth = 120;
     private static final double headWidth = 40;
     

@@ -19,17 +19,12 @@ public class Evolution extends Application {
     private static CreatureGrid grid;
     
     public static void main(String[] args) {
-
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        
-        stage.setTitle("Evolution");
-        
-        GridPane root = new GridPane();
-        
+
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
         double width = screen.getWidth();
         double height = screen.getHeight();
@@ -39,6 +34,8 @@ public class Evolution extends Application {
         control = new ControlPanel(width, controlHeight);
         grid = new CreatureGrid(4, 4, width, gridHeight);
         
+        stage.setTitle("Evolution");
+        GridPane root = new GridPane();
         root.add(control, 0, 0);
         root.add(Evolution.grid, 0, 1);
 
@@ -50,6 +47,10 @@ public class Evolution extends Application {
     
     public static void release() {
         CreaturePane[] selected = grid.getSelected();
+        if (selected.length == 0) {
+            control.message("Select creatures to release");
+            return;
+        }
         for (CreaturePane pane : selected) {
             pane.release();
         }
@@ -61,13 +62,14 @@ public class Evolution extends Application {
         CreaturePane[] selected = grid.getSelected();
         CreaturePane[] empty = grid.getEmpty();
         if (selected.length != 2) {
-            control.message("Must select exactly 2 to breed");
+            control.message("Select exactly 2 to breed");
             return;
         }
         if (empty.length == 0) {
             control.message("Must have empty space to breed");
             return;
         }
+        grid.clearSelection();
         empty[0].breed(selected[0], selected[1]);
         control.message("Bred");
     }

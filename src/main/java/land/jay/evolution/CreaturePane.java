@@ -10,6 +10,8 @@ import javafx.scene.shape.Rectangle;
 
 public class CreaturePane extends Pane {
     
+    private static final double PAD = 20;
+    
     private Creature creature = new Creature();
     private Group parts = new Group();
     private double width;
@@ -28,12 +30,12 @@ public class CreaturePane extends Pane {
         this.addEventFilter(MouseEvent.MOUSE_CLICKED, (e) -> this.toggleSelect());
     }
     
-    public void drawCreature(double width, double height) {
+    public void drawCreature() {
         
-        double scale = Math.min((width / Creature.MAX_WIDTH), (height / Creature.MAX_HEIGHT));
+        double scale = Math.min((this.width / (Creature.MAX_WIDTH + PAD)), (this.height / (Creature.MAX_HEIGHT + PAD)));
         
-        double bodyX = (width - this.creature.getBodyWidth(scale)) / 2;
-        double bodyY = (height - this.creature.getBodyWidth(height / 230)) + 10;
+        double bodyX = (this.width - this.creature.getBodyWidth(scale)) / 2;
+        double bodyY = (this.height - this.creature.getBodyWidth(this.height / 230)) + 10;
         Rectangle body = new Rectangle(bodyX, bodyY, this.creature.getBodyWidth(scale), this.creature.getBodyHeight(scale));
         
         double legWidth = 15 * (this.creature.getBodyHeight(scale) / 40);
@@ -79,7 +81,8 @@ public class CreaturePane extends Pane {
     
     public void breed(CreaturePane first, CreaturePane second) {
         this.creature = new Creature(first.creature, second.creature);
-        this.drawCreature(width, height);
+        this.drawCreature();
+        this.setStyle("-fx-border-color: lime;\n -fx-border-width: 10");
         this.empty = false;
     }
     
@@ -91,5 +94,10 @@ public class CreaturePane extends Pane {
             this.setStyle("-fx-border-color: blue;\n -fx-border-width: 10");
             this.selected = true;
         }
+    }
+    
+    public void unSelect() {
+        this.setStyle("-fx-border-color: black;\n -fx-border-width: 1");
+        this.selected = false;
     }
 }

@@ -17,7 +17,7 @@ public class CreatureGrid extends GridPane {
                 CreaturePane pane = new CreaturePane(cellWidth, cellHeight);
                 this.panes[row][col] = pane;
                 this.add(pane, col, row);
-                pane.drawCreature(cellWidth, cellHeight);
+                pane.drawCreature();
             }
         }
     }
@@ -49,9 +49,7 @@ public class CreatureGrid extends GridPane {
     public void clearSelection() {
         for (CreaturePane[] row : this.panes) {
             for (CreaturePane pane : row) {
-                if (pane.selected) {
-                    pane.toggleSelect();
-                }
+                pane.unSelect();
             }
         }
     }

@@ -1,6 +1,5 @@
 package land.jay.evolution;
 
-import java.util.Random;
 import org.apache.commons.math3.distribution.BetaDistribution;
 
 public enum Gene {
@@ -17,10 +16,13 @@ public enum Gene {
         
     private final double min;
     private final double max;
+    private final BetaDistribution seed;
     
     private Gene(double min, double max) {
         this.min = min;
         this.max = max;
+        double mid = Math.random();
+        this.seed = new BetaDistribution(2 * mid, 2 * (1 - mid));
     }
     
     /** @return A random value weighted between the parents. */
@@ -30,17 +32,14 @@ public enum Gene {
         double high = this.normalise(Math.max(first, second));
         double mid = low + ((high - low) / 2);
         
-        double precision = Math.pow(high - mid, -1.6);
-        double alpha = precision * mid;
-        double beta = precision * (1 - mid);
-        
-        BetaDistribution distribution = new BetaDistribution(alpha, beta);
+        double precision = Math.pow(high - mid, -1.6);        
+        BetaDistribution distribution = new BetaDistribution(precision *  mid, precision * (1 - mid));
         return this.unNormalise(distribution.sample());
     }
     
-    /** @return A random value from the possible range. */
+    /** @return A random value from the possible range according to initial seed. */
     public double random() {
-        return this.min + (Math.random()*(this.max - this.min));
+        return this.unNormalise(this.seed.sample());
     }
     
     /** @return A double from 0-1 representing this value. */
