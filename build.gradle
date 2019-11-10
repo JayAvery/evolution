@@ -29,4 +29,5 @@ jar {
     }
 }
 
+archivesBaseName = 'Evolution-1.1'
 mainClassName = 'land.jay.evolution.Evolution'
