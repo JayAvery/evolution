@@ -1,8 +1,11 @@
-# Ignore Gradle
+# Notes and plans
+plans
+
+# Gradle
 .gradle
 gradle
 
-# Ignore build outputs
+# Build outputs
 build
 bin
 
